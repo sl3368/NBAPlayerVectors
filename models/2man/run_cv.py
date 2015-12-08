@@ -2,6 +2,7 @@ import subprocess
 import sys
 import cPickle
 import numpy
+import os
 
 
 directory = sys.argv[1]
@@ -24,11 +25,11 @@ fold_mins = []
 
 ## For each fold
 for k in range(folds):
-    
-    training_fn_string = str(k)+"_fold_"+str(vector_length)+".data.R"   
+    print "PERFORMING INFERENCE ON "+str(k)+" FOLD...."    
+    training_fn_string = directory+"CV/training/"+str(k)+"_fold_"+str(vector_length)+".data.R"   
  
     ## Perform SVI
-    subprocess.call(["./code/lineup_2man","variational","data","file="+training_fn_string])
+    subprocess.call(["./code/linup_2man","variational","data","file="+training_fn_string])
     
     ## Process Inference
     subprocess.call(["python","process_inference.py","output.csv","results/tmp/cv_tmp_file.save",str(num_players),str(vector_length)])
@@ -64,31 +65,34 @@ for k in range(folds):
 
             ## compute the value of the lineup
             predicted_pts = numpy.random.normal(mean_alpha+mean_vecs[player1_test[t]]*numpy.transpose(mean_vecs[player2_test[t]]),mean_sigma/mins_test[t])
+            clipped_predicted_pts = numpy.clip(predicted_pts,-1000000,1000000)
 
             ## compute the error
-            diff = abs(predicted_pts-pts_test[t])
+            diff = abs(clipped_predicted_pts-pts_test[t])
             fold_err.append(diff)     
             specific_mean_err.append(diff)
             
             ## scaled error
-            scld_err = diff * mins_test[t]
+            scld_err = diff * mins_test[t]* mins_test[t]
             fold_scld_err.append(scld_err)
             specific_mean_scld_err.append(scld_err)
 
             ## percent error
-            pct_err = diff/pts_test[t]
+            pct_err = diff/(abs(pts_test[t])+.1)
             fold_pct_err.append(pct_err)
             specific_mean_pct_err.append(pct_err)
             
             ## scaled percent error
-            pct_err_scld = pct_err * mins_test[t]
+            pct_err_scld = pct_err * mins_test[t]* mins_test[t]
             fold_scld_pct_err.append(pct_err_scld)
             specific_mean_scld_pct_err.append(pct_err_scld)
  
             ## real vals
             fold_pts.append(pts_test[t])
-            fold_mins.append(minst_test[t])
-        
+            fold_mins.append(mins_test[t])
+            
+            ## Compute held out log probability
+            
 
     ## remove temporary file
     os.remove("results/tmp/cv_tmp_file.save")

@@ -12,8 +12,11 @@ import pystan
 
 filename = sys.argv[1]
 savefilename = sys.argv[2]
-rdump_fn = sys.argv[3]
-k_size = int(sys.argv[4])
+rdump = False
+if len(sys.argv)>3:
+    rdump_fn = sys.argv[3]
+    k_size = int(sys.argv[4])
+    rdump = True
 
 f = open(filename)
 data = cPickle.load(f)
@@ -57,11 +60,11 @@ for i,val in enumerate(players):
 print 'Number of data points: '+str(len(player1))
 print 'Total number of plyaers: '+str(len(players))
     
-save_data = [player1,player2,player3,player4,points_val,minutes_val,players,index_to_player_dict]
+save_data = [player1,player2,player3,player4,points_val,max_mins_norm,players,index_to_player_dict]
 sf = open(savefilename,'wb')
 cPickle.dump(save_data,sf, protocol=cPickle.HIGHEST_PROTOCOL)
 sf.close()
 
-data_dict = { "N":len(player1), "T":len(players), "K":k_size, "player1":player1, "player2":player2, "player3":player3, "player4":player4, "y":points_val, "mins":max_mins_norm }
-
-pystan.misc.stan_rdump(data_dict,rdump_fn)
+if rdump:
+    data_dict = { "N":len(player1), "T":len(players), "K":k_size, "player1":player1, "player2":player2, "player3":player3, "player4":player4, "y":points_val, "mins":max_mins_norm }
+    pystan.misc.stan_rdump(data_dict,rdump_fn)

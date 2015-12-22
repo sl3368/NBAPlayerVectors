@@ -18,6 +18,8 @@ with open(filename) as f:
             k.append(line.rstrip('\n').split(','))
         i=i+1
 print 'Done parsing csv'
+mean_alpha = numpy.array(k[5][1]).astype('f')
+mean_sigma = numpy.array(k[5][-1]).astype('f')
 mean_data = numpy.array(k[5][2:-1]).astype('f')
 mean_data = mean_data.reshape((vector_size,no_players))
 mean_data = mean_data.transpose()
@@ -25,7 +27,7 @@ mean_data = mean_data.transpose()
 tsne_model = TSNE()
 transformed_space = tsne_model.fit_transform(mean_data)
 
-output = [mean_data,transformed_space]
+output = [mean_data,transformed_space,mean_alpha,mean_sigma]
 sf = open(savefilename,'wb')
 cPickle.dump(output, sf, protocol=cPickle.HIGHEST_PROTOCOL)
 sf.close()

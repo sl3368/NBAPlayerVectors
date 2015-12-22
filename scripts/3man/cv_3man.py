@@ -3,7 +3,7 @@ import cPickle
 import pystan
 import numpy
 
-## USAGE python 2man_cross_validation.py [filename] [directory_name] [K_value]
+## USAGE python 3man_cross_validation.py [filename] [directory_name] [K_value]
 
 filename = sys.argv[1]
 directory = sys.argv[2]

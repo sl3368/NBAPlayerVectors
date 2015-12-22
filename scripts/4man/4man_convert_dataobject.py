@@ -58,7 +58,7 @@ for i,val in enumerate(players):
     index_to_player_dict[i]=val
 
 print 'Number of data points: '+str(len(player1))
-print 'Total number of plyaers: '+str(len(players))
+print 'Total number of players: '+str(len(players))
     
 save_data = [player1,player2,player3,player4,points_val,max_mins_norm,players,index_to_player_dict]
 sf = open(savefilename,'wb')

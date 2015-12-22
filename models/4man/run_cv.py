@@ -30,7 +30,7 @@ for k in range(folds):
     training_fn_string = directory+"CV/training/"+str(k)+"_fold_"+str(vector_length)+".data.R"   
  
     ## Perform SVI
-    subprocess.call(["./code/linup_2man","variational","data","file="+training_fn_string])
+    subprocess.call(["./code/lineup_4man","variational","data","file="+training_fn_string])
     
     ## Process Inference
     subprocess.call(["python","process_inference.py","output.csv","results/tmp/cv_tmp_file.save",str(num_players),str(vector_length)])
@@ -42,8 +42,10 @@ for k in range(folds):
 
     player1_test = test_data[0]
     player2_test = test_data[1]
-    mins_test = test_data[2]
-    pts_test = test_data[3]
+    player3_test = test_data[2]
+    player4_test = test_data[3]
+    mins_test = test_data[4]
+    pts_test = test_data[5]
     
     
     ## Load latent vectors
@@ -64,8 +66,13 @@ for k in range(folds):
          
         for t in range(len(player1_test)):
 
+            ## compute product of vectors
+            vector_sum = 0
+            for i in range(vector_length):
+                vector_sum = vector_sum + mean_vecs[player1_test[t]][i] + mean_vecs[player2_test[t]][i] + mean_vecs[player3_test[t]][i] + mean_vecs[player4_test[t]][i]
+
             ## compute the value of the lineup
-            predicted_pts = numpy.random.normal(mean_alpha+mean_vecs[player1_test[t]]*numpy.transpose(mean_vecs[player2_test[t]]),mean_sigma/mins_test[t])
+            predicted_pts = numpy.random.normal(mean_alpha+vector_sum,mean_sigma/mins_test[t])
             clipped_predicted_pts = numpy.clip(predicted_pts,-1000000,1000000)
 
             ## compute the error

@@ -29,7 +29,17 @@
 <h3>
 <a id="data" class="anchor" href="#data" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Data</h3>
 
-<p>The data set provided at <code>basketball-reference.com</code>, has line-ups of size 2 (dyadic), 3, 4, and 5 players for all teams in the NBA over the past 10+ years. For each data point, there exists a unique set of players,{a, b, c, d, e}, and a set of metrics which describe their performance when playing together: points, minutes played, shooting, etc. In order to collect all this data from the website, a crawler was written in JavaScript which can be run using Node.js. Line ups of all sizes have been collected for the previous NBA season (2014-2015). The advantage of the crawler is that it can easily scrape data for even earlier seasons, theoretically reducing variance in inference estimates. But the league is constantly changing. Players develop, experience injuries, trades are made, and coaches are replaced. There could be several hidden factors which are not accounted for that affect the data season to season. Therefore only a single season was used for this analysis.</p>
+<p>The data set provided at <code>basketball-reference.com</code>, has line-ups of size 2 (dyadic), 3, 4, and 5 players for all teams in the NBA over the past 10+ years. For each data point, there exists a unique set of players,{a, b, c, d, e}, and a set of metrics which describe their performance when playing together: points, minutes played, shooting, etc. In order to collect all this data from the website, a crawler was written in JavaScript which can be run using Node.</p>
+
+<p>There are additional scripts for cleaning and pre-processing the data for model inference.</p>
+
+<h3>
+<a id="inference" class="anchor" href="#inference" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Inference</h3>
+
+<h2>
+<a id="stan" class="anchor" href="#stan" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Stan</h2>
+
+<p>For inference, the model was implemented in the probabilistic programming language, <a href="http://stan-mc.org">Stan</a>. Upon attempting to sample the posterior distribution using HMC, the inference algorithm failed. HMC struggles with matrix factorization due to there being multiple posterior modes. In order to overcome this issue the models were implemented in CmdStan and successful inference was accomplished using ADVI. </p>
 
 <h3>
 <a id="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>

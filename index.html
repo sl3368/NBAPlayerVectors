@@ -19,32 +19,29 @@
     </section>
 
     <section class="main-content">
-      <h3>
-<a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Introduction</h3>
+      <h2>
+<a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Introduction</h2>
 
 <p>Competition in the National Basketball Association (NBA) has intensified over the years and teams are exploring all options to gain an edge. As a result, the strategy of the sport (how to construct a team, which plays to run, what shots to take, etc.) has also evolved drastically. The use of technology to track players’ movements and actions on the court has generated rich data sets to leverage.</p>
 
 <p>A team is not just the sum of its parts, there are many intricacies to the on court dynamics that can dictate a team’s success. Usually, a player’s individual statistics have been used to analyze their ability and predict performance with potential teammates. Yet this information may be limited in capturing features which may indicate how well players fit with each other. In this project I modified matrix factorization to model line up data, which only records how a cumulative group of players performed over the course of a season.</p>
 
-<h3>
-<a id="data" class="anchor" href="#data" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Data</h3>
+<h2>
+<a id="data" class="anchor" href="#data" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Data</h2>
 
 <p>The data set provided at <code>basketball-reference.com</code>, has line-ups of size 2 (dyadic), 3, 4, and 5 players for all teams in the NBA over the past 10+ years. For each data point, there exists a unique set of players,{a, b, c, d, e}, and a set of metrics which describe their performance when playing together: points, minutes played, shooting, etc. In order to collect all this data from the website, a crawler was written in JavaScript which can be run using Node.</p>
 
 <p>There are additional scripts for cleaning and pre-processing the data for model inference.</p>
 
-<h3>
-<a id="inference" class="anchor" href="#inference" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Inference</h3>
-
 <h2>
-<a id="stan" class="anchor" href="#stan" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Stan</h2>
+<a id="inference-with-stan" class="anchor" href="#inference-with-stan" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Inference with Stan</h2>
 
 <p>For inference, the model was implemented in the probabilistic programming language, <a href="http://mc-stan.org/">Stan</a>. Upon attempting to sample the posterior distribution using HMC, the inference algorithm failed. HMC struggles with matrix factorization due to there being multiple posterior modes. In order to overcome this issue the models were implemented in CmdStan and successful inference was accomplished using ADVI. </p>
 
-<h3>
-<a id="results-and-thoughts" class="anchor" href="#results-and-thoughts" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Results and Thoughts</h3>
+<h2>
+<a id="conclusion" class="anchor" href="#conclusion" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Conclusion</h2>
 
-<p>To read more about the model, visit: </p>
+<p>Cross validation testing was done to measure model accuracy. To read more about the results for various line up sizes and visualization of the inferred latent space, check out the full report here. If you would like to try running some of these experiments, the project repository is a good place to start.</p>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/sl3368/NBAPlayerVectors">Inferring NBA Player Vectors</a> is maintained by <a href="https://github.com/sl3368">sl3368</a>.</span>
